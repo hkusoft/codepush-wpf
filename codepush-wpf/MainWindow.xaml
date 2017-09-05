@@ -86,15 +86,15 @@
             <ColumnDefinition Width="30*"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="25*"/>
-            <RowDefinition Height="25*"/>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="30"/>
             <RowDefinition Height="495*"/>
-            <RowDefinition Height="25*"/>
+            <RowDefinition Height="30"/>
         </Grid.RowDefinitions>
-        <Label Content="Apps" Grid.Column="0" Grid.Row="1"/>
-        <Label Content="Deployments" Grid.Column="1" Grid.Row="1"/>
-        <Label Content="Releases" Grid.Column="2" Grid.Row="1"/>
-        <Label Name="InfoView" Grid.Row="0" Grid.ColumnSpan="3" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Content="Info" Background="LightSalmon"/>
+        <Label Content="Apps" Grid.Column="0" Grid.Row="1" VerticalAlignment="Center"/>
+        <Label Content="Deployments" Grid.Column="1" Grid.Row="1" VerticalAlignment="Center"/>
+        <Label Content="Releases" Grid.Column="2" Grid.Row="1" VerticalAlignment="Center"/>
+        <Label Name="InfoView" Grid.Row="0" Grid.ColumnSpan="3" HorizontalAlignment="Stretch" VerticalAlignment="Center" Content="Info" Background="LightSalmon"/>
         <ListBox Name="AppList" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.Column="0" Grid.Row="2" ItemsSource="{Binding}" SelectionChanged="AppList_SelectionChanged">
             <ListBox.ItemTemplate>
                 <DataTemplate>
