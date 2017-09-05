@@ -6,8 +6,80 @@
         xmlns:local="clr-namespace:codepush_wpf"
         mc:Ignorable="d"
         Title="Mobility Release Manager" Height="600" Width="800" Initialized="Window_Initialized">
-    <Grid>      
+
+    <Window.Resources>
+        <ResourceDictionary>
+            <Style x:Key="AnimatedSwitch" TargetType="{x:Type ToggleButton}">
+                <Setter Property="Foreground" Value="Black" />
+                <Setter Property="Background" Value="#FAFAFB" />
+                <Setter Property="BorderBrush" Value="#EAEAEB" />
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="ToggleButton">
+                            <Viewbox Stretch="Uniform">
+                                <Canvas Name="Layer_1" Width="20" Height="20" Canvas.Left="10" Canvas.Top="0">
+                                    <Ellipse  Canvas.Left="0" Width="20" Height="20" Fill="{TemplateBinding Background}" Stroke="{TemplateBinding BorderBrush}" StrokeThickness="0.5"/>
+                                    <Ellipse  Canvas.Left="15" Width="20" Height="20" Fill="{TemplateBinding Background}" Stroke="{TemplateBinding BorderBrush}" StrokeThickness="0.5"/>
+                                    <Border Canvas.Left="10" Width="15" Height="20" Name="rect416927" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="0,0.5,0,0.5"/>
+                                    <Ellipse x:Name="ellipse"  Canvas.Left="0" Width="20" Height="20" Fill="White" Stroke="{TemplateBinding BorderBrush}" StrokeThickness="0.3">
+                                        <Ellipse.RenderTransform>
+                                            <TranslateTransform X="0" Y="0" />
+                                        </Ellipse.RenderTransform>
+                                        <Ellipse.BitmapEffect>
+                                            <DropShadowBitmapEffect Softness="0.1" ShadowDepth="0.7" Direction="270" Color="#BBBBBB"/>
+                                        </Ellipse.BitmapEffect>
+                                    </Ellipse>
+                                </Canvas>
+                            </Viewbox>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsChecked" Value="True" >
+                                    <Trigger.EnterActions>
+                                        <BeginStoryboard>
+                                            <Storyboard>
+                                                <ColorAnimation Storyboard.TargetProperty="Background.Color" To="#52D468" Duration="0:0:0.2" />
+                                                <ColorAnimation Storyboard.TargetProperty="BorderBrush.Color" To="#41C955" Duration="0:0:0.2" />
+                                                <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(Ellipse.RenderTransform).(TranslateTransform.X)" Storyboard.TargetName="ellipse">
+                                                    <SplineDoubleKeyFrame KeyTime="0" Value="0"/>
+                                                    <SplineDoubleKeyFrame KeyTime="0:0:0.4" Value="15" KeySpline="0, 1, 0.6, 1"/>
+                                                </DoubleAnimationUsingKeyFrames>
+                                            </Storyboard>
+                                        </BeginStoryboard>
+                                    </Trigger.EnterActions>
+                                    <Trigger.ExitActions>
+                                        <BeginStoryboard>
+                                            <Storyboard>
+                                                <ColorAnimation Storyboard.TargetProperty="Background.Color" To="#FAFAFB" Duration="0:0:0.2" />
+                                                <ColorAnimation Storyboard.TargetProperty="BorderBrush.Color" To="#EAEAEB" Duration="0:0:0.2" />
+                                                <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(Ellipse.RenderTransform).(TranslateTransform.X)" Storyboard.TargetName="ellipse">
+                                                    <SplineDoubleKeyFrame KeyTime="0" Value="15"/>
+                                                    <SplineDoubleKeyFrame KeyTime="0:0:0.3" Value="0" KeySpline="0, 0.5, 0.5, 1"/>
+                                                </DoubleAnimationUsingKeyFrames>
+                                            </Storyboard>
+                                        </BeginStoryboard>
+                                    </Trigger.ExitActions>
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+            <Style x:Key="AltRow" TargetType="{x:Type ListBoxItem}" >
+                <Style.Triggers>
+                    <Trigger Property="ItemsControl.AlternationIndex" Value="0">
+                        <Setter Property="Background" Value="#19f39611"></Setter>
+                    </Trigger>
+                    <Trigger Property="ItemsControl.AlternationIndex" Value="1">
+                        <Setter Property="Background" Value="#19000000"></Setter>
+                    </Trigger>
+                </Style.Triggers>
+                <Setter Property="Margin" Value="0"/>
+            </Style>
+        </ResourceDictionary>
         
+        
+    </Window.Resources>
+
+    <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="8*"/>
             <ColumnDefinition Width="8*"/>
@@ -48,19 +120,66 @@
         </ListBox>
 
         <ListBox Name="DeploymentList" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.Column="1" Grid.Row="2" SelectionChanged="DeploymentList_SelectionChanged" />
-        <ListBox Name="ReleaseList" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.Column="2" Grid.Row="2">
+        <ListBox Name="ReleaseList" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.Column="2" Grid.Row="2"
+                 ItemContainerStyle ="{StaticResource AltRow}">
             <ListBox.ItemTemplate>
                 <DataTemplate>
-                    <StackPanel Orientation="Horizontal">
-                        <CheckBox Content="Enabled" IsChecked="{Binding is_enabled}"/>
-                        <TextBlock Text="{Binding label}" VerticalAlignment="Center" Margin="10, 0,0,0"/>
-                    </StackPanel>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="50"/>
+                            <ColumnDefinition Width="160"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+
+
+                        <TextBlock Text="{Binding label}" VerticalAlignment="Center" 
+                                       HorizontalAlignment="Stretch"
+                                       FontSize="18"  FontWeight="Bold">
+                                <TextBlock.Background>
+                                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                        <GradientStop Color="#FF4CACA3" Offset="0"/>
+                                        <GradientStop Color="#FF98F0E8" Offset="1"/>
+                                    </LinearGradientBrush>
+                                </TextBlock.Background>
+                        </TextBlock>
+
+
+                        <StackPanel Orientation="Vertical"  Grid.Row="0" Grid.Column="1">
+                            <TextBlock Text="Released By" VerticalAlignment="Center" Margin="10,0,10,0" FontSize="12" FontWeight="Bold"/>
+                            <TextBlock Text="{Binding released_by}" VerticalAlignment="Center" Margin="10,0,10,5" />
+                            <TextBlock Text="Upload Time" VerticalAlignment="Center" Margin="10,0,10,0" FontSize="12" FontWeight="Bold"/>
+                            <TextBlock Text="{Binding UploadTime}" VerticalAlignment="Center" Margin="10,0,10,0" />
+                        </StackPanel>
+
+                        <StackPanel Orientation="Vertical"  Grid.Row="0" Grid.Column="2">
+                            <StackPanel Orientation="Horizontal"  Margin="0, 5" >
+                                
+                                <ToggleButton IsChecked="{Binding IsEnabled}" Style="{StaticResource AnimatedSwitch}" Height="25" Width="80"  VerticalAlignment="Center"/>
+                                <TextBlock Text="Enabled" Width="100" VerticalAlignment="Center"/>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal"  Margin="0, 5">
+                                <ToggleButton IsChecked="{Binding is_mandatory}" Style="{StaticResource AnimatedSwitch}" Height="25" Width="80" VerticalAlignment="Center" />
+                                <TextBlock Text="Mandatory" Width="100" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </StackPanel>
+                    </Grid>
+
+
+
+
                 </DataTemplate>
             </ListBox.ItemTemplate>
-        </ListBox>           
-        
+
+        </ListBox>
+
         <Label Name="UserLabel" Content="User" Grid.Column="0" Grid.Row="3"/>
 
-        
+
     </Grid>
 </Window>

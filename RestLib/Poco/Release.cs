@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
 
 namespace RestLib.helper
 {
@@ -47,12 +48,23 @@ namespace RestLib.helper
             return label;
         }
 
-        public bool is_enabled
+        public bool IsEnabled
         {
             get { return !is_disabled; }
             set
             {
                 is_disabled = !value;
+            }
+        }
+
+        public string UploadTime
+        {
+            get
+            {                
+                DateTime start = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+                DateTime date = start.AddMilliseconds(upload_time).ToLocalTime();
+                return String.Format("{0:g}", date);
+                //return date.ToString(@"h \\h m \\m");
             }
         }
     }
