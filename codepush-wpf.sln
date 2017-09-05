@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.26730.8
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "codepush-wpf", "codepush-wpf\codepush-wpf.csproj", "{A964EDBB-1FBE-4D8C-8676-A39D7774C6F4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RestLib", "RestLib\RestLib.csproj", "{BDB5B409-6F10-46BF-9FF9-8D1148D5C9C8}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A964EDBB-1FBE-4D8C-8676-A39D7774C6F4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A964EDBB-1FBE-4D8C-8676-A39D7774C6F4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A964EDBB-1FBE-4D8C-8676-A39D7774C6F4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A964EDBB-1FBE-4D8C-8676-A39D7774C6F4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BDB5B409-6F10-46BF-9FF9-8D1148D5C9C8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BDB5B409-6F10-46BF-9FF9-8D1148D5C9C8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BDB5B409-6F10-46BF-9FF9-8D1148D5C9C8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BDB5B409-6F10-46BF-9FF9-8D1148D5C9C8}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {1B5C411F-67BC-4F40-98D5-DBD981DA9522}
+	EndGlobalSection
+EndGlobal
