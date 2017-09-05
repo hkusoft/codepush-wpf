@@ -67,5 +67,21 @@ namespace RestLib.helper
                 //return date.ToString(@"h \\h m \\m");
             }
         }
+
+        public string SizeInKb
+        {
+            get
+            {
+                return string.Format("{0} KB", size / 1024);
+            }
+        }
+
+        public string RolloutPercent
+        {
+            get
+            {
+                return string.Format("{0} %", rollout);
+            }
+        }
     }
 }

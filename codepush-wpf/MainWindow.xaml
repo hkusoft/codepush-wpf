@@ -75,8 +75,8 @@
                 <Setter Property="Margin" Value="0"/>
             </Style>
         </ResourceDictionary>
-        
-        
+
+
     </Window.Resources>
 
     <Grid>
@@ -138,35 +138,47 @@
                         </Grid.RowDefinitions>
 
 
-                        <TextBlock Text="{Binding label}" VerticalAlignment="Center" 
+                        <TextBlock Text="{Binding label}" VerticalAlignment="Top" 
                                        HorizontalAlignment="Stretch"
                                        FontSize="18"  FontWeight="Bold">
-                                <TextBlock.Background>
-                                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                                        <GradientStop Color="#FF4CACA3" Offset="0"/>
-                                        <GradientStop Color="#FF98F0E8" Offset="1"/>
-                                    </LinearGradientBrush>
-                                </TextBlock.Background>
+                            <TextBlock.Background>
+                                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                    <GradientStop Color="#FF4CACA3" Offset="0"/>
+                                    <GradientStop Color="#FF98F0E8" Offset="1"/>
+                                </LinearGradientBrush>
+                            </TextBlock.Background>
                         </TextBlock>
 
 
                         <StackPanel Orientation="Vertical"  Grid.Row="0" Grid.Column="1">
-                            <TextBlock Text="Released By" VerticalAlignment="Center" Margin="10,0,10,0" FontSize="12" FontWeight="Bold"/>
+                            <TextBlock Text="Released By" VerticalAlignment="Center" Margin="10,0" FontSize="12" FontWeight="Bold"/>
                             <TextBlock Text="{Binding released_by}" VerticalAlignment="Center" Margin="10,0,10,5" />
-                            <TextBlock Text="Upload Time" VerticalAlignment="Center" Margin="10,0,10,0" FontSize="12" FontWeight="Bold"/>
-                            <TextBlock Text="{Binding UploadTime}" VerticalAlignment="Center" Margin="10,0,10,0" />
+                            <TextBlock Text="Upload Time" VerticalAlignment="Center" Margin="10,0" FontSize="12" FontWeight="Bold"/>
+                            <TextBlock Text="{Binding UploadTime}" VerticalAlignment="Center" Margin="10,0,10,5" />
+                            
+                            <StackPanel Orientation="Horizontal" Margin="10,0, 0, 5">
+                                <TextBlock Text="Rollout" Width="90" VerticalAlignment="Center" Margin="0" FontSize="12" FontWeight="Bold"/>
+                                <TextBlock Text="{Binding RolloutPercent}" VerticalAlignment="Center" Margin="5, 0" />
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" Margin="10,0, 0, 10">
+                                <TextBlock Text="Size" Width="90" VerticalAlignment="Center" Margin="0" FontSize="12" FontWeight="Bold"/>
+                                <TextBlock Text="{Binding SizeInKb}" VerticalAlignment="Center" Margin="5, 0" />
+                            </StackPanel>
+
+                            <StackPanel Orientation="Horizontal"  Margin="10, 5" >
+                                <TextBlock Text="Enabled" Width="70" VerticalAlignment="Center" FontWeight="Bold"/>
+                                <ToggleButton IsChecked="{Binding IsEnabled}" Style="{StaticResource AnimatedSwitch}" Height="25" Width="80"  VerticalAlignment="Center"/>
+
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal"  Margin="10, 5">
+                                <TextBlock Text="Mandatory" Width="70" VerticalAlignment="Center" FontWeight="Bold"/>
+                                <ToggleButton IsChecked="{Binding is_mandatory}" Style="{StaticResource AnimatedSwitch}" Height="25" Width="80" VerticalAlignment="Center" />
+
+                            </StackPanel>
                         </StackPanel>
 
                         <StackPanel Orientation="Vertical"  Grid.Row="0" Grid.Column="2">
-                            <StackPanel Orientation="Horizontal"  Margin="0, 5" >
-                                
-                                <ToggleButton IsChecked="{Binding IsEnabled}" Style="{StaticResource AnimatedSwitch}" Height="25" Width="80"  VerticalAlignment="Center"/>
-                                <TextBlock Text="Enabled" Width="100" VerticalAlignment="Center"/>
-                            </StackPanel>
-                            <StackPanel Orientation="Horizontal"  Margin="0, 5">
-                                <ToggleButton IsChecked="{Binding is_mandatory}" Style="{StaticResource AnimatedSwitch}" Height="25" Width="80" VerticalAlignment="Center" />
-                                <TextBlock Text="Mandatory" Width="100" VerticalAlignment="Center"/>
-                            </StackPanel>
+
                         </StackPanel>
                     </Grid>
 
