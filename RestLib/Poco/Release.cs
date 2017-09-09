@@ -32,6 +32,7 @@ namespace RestLib.helper
                 serializer.Serialize(writer, this);
                 return stringWriter.ToString();
             }
+            return null;
         }
 
         public bool ShouldSerializetarget_binary_range() { return false; }

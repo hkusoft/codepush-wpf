@@ -86,15 +86,15 @@
             <ColumnDefinition Width="30*"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="30"/>
+            <RowDefinition Height="36"/>
             <RowDefinition Height="30"/>
             <RowDefinition Height="495*"/>
             <RowDefinition Height="30"/>
         </Grid.RowDefinitions>
-        <Label Content="Apps" Grid.Column="0" Grid.Row="1" VerticalAlignment="Center"/>
+        <Label Content="Apps" Grid.Column="0" Grid.Row="1" VerticalAlignment="Stretch"/>
         <Label Content="Deployments" Grid.Column="1" Grid.Row="1" VerticalAlignment="Center"/>
         <Label Content="Releases" Grid.Column="2" Grid.Row="1" VerticalAlignment="Center"/>
-        <Label Name="InfoView" Grid.Row="0" Grid.ColumnSpan="3" HorizontalAlignment="Stretch" VerticalAlignment="Center" Content="Info" Background="LightSalmon"/>
+        <Label Name="InfoView" Grid.Row="0" Grid.ColumnSpan="3" HorizontalAlignment="Stretch" VerticalAlignment="Center" Content="Info" Background="LightSalmon" FontSize="16"/>
         <ListBox Name="AppList" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.Column="0" Grid.Row="2" ItemsSource="{Binding}" SelectionChanged="AppList_SelectionChanged">
             <ListBox.ItemTemplate>
                 <DataTemplate>
@@ -126,7 +126,7 @@
                 <DataTemplate>
                     <Grid>
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="50"/>
+                            <ColumnDefinition Width="80"/>
                             <ColumnDefinition Width="160"/>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
@@ -137,50 +137,50 @@
                             <RowDefinition Height="*"/>
                         </Grid.RowDefinitions>
 
-
-                        <TextBlock Text="{Binding label}" VerticalAlignment="Top" 
-                                       HorizontalAlignment="Stretch" Grid.Row="0" Grid.Column="0"
+                        <StackPanel Orientation="Vertical" Grid.Row="0" Grid.Column="0">
+                            <!--Version Label-->
+                            <TextBlock Text="{Binding label}" VerticalAlignment="Top" Margin="0,5"
+                                       HorizontalAlignment="Stretch" 
                                        FontSize="18"  FontWeight="Bold">
-                            <TextBlock.Background>
-                                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                                    <GradientStop Color="#FF4CACA3" Offset="0"/>
-                                    <GradientStop Color="#FF98F0E8" Offset="1"/>
-                                </LinearGradientBrush>
-                            </TextBlock.Background>
-                        </TextBlock>
+                                <TextBlock.Background>
+                                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                        <GradientStop Color="#FF4CACA3" Offset="0"/>
+                                        <GradientStop Color="#FF98F0E8" Offset="1"/>
+                                    </LinearGradientBrush>
+                                </TextBlock.Background>
+                            </TextBlock>
+                            <!--IsEnabled-->
+                            <TextBlock Text="Enabled" VerticalAlignment="Center" FontWeight="Bold" Margin="0,0,0,5"/>
+                            <ToggleButton IsChecked="{Binding IsEnabled}" Style="{StaticResource AnimatedSwitch}"
+                                              x:Name="EnableToggleButton"
+                                              Height="25"  VerticalAlignment="Center" HorizontalAlignment="Left" 
+                                          Checked="OnReleaseToggleChanged" Unchecked="OnReleaseToggleChanged"/>
+                            <!--IsMandatory-->
+                            <TextBlock Text="Mandatory" VerticalAlignment="Center" FontWeight="Bold" Margin="0, 0, 0, 5"/>
+                            <ToggleButton IsChecked="{Binding is_mandatory}" Style="{StaticResource AnimatedSwitch}" Margin="0,0,0,10" 
+                                              x:Name="MandatoryToggleButton"
+                                              Height="25" HorizontalAlignment="Left" VerticalAlignment="Center" 
+                                              Checked="OnReleaseToggleChanged"
+                                              Unchecked="OnReleaseToggleChanged"/>
+
+                        </StackPanel>
 
 
-                        <StackPanel Orientation="Vertical"  Grid.Row="0" Grid.Column="1">                            
-                            <TextBlock Text="Released By" VerticalAlignment="Center" Margin="10,0" FontSize="12" FontWeight="Bold"/>
-                            <TextBlock Text="{Binding released_by}" VerticalAlignment="Center" Margin="10,0,10,5" />
+                        <StackPanel Orientation="Vertical"  Grid.Row="0" Grid.Column="1">
                             <TextBlock Text="Upload Time" VerticalAlignment="Center" Margin="10,0" FontSize="12" FontWeight="Bold"/>
                             <TextBlock Text="{Binding UploadTime}" VerticalAlignment="Center" Margin="10,0,10,5" />
+
+                            <TextBlock Text="Released By" VerticalAlignment="Center" Margin="10,0" FontSize="12" FontWeight="Bold"/>
+                            <TextBlock Text="{Binding released_by}" VerticalAlignment="Center" Margin="10,0,10,5" />
                             
-                            <StackPanel Orientation="Horizontal" Margin="10,0, 0, 5">
-                                <TextBlock Text="Rollout" Width="90" VerticalAlignment="Center" Margin="0" FontSize="12" FontWeight="Bold"/>
+                            <StackPanel Orientation="Horizontal" Margin="10, 0, 0, 5">
+                                <TextBlock Text="Rollout" Width="50" VerticalAlignment="Center" Margin="0" FontSize="12" FontWeight="Bold"/>
                                 <TextBlock Text="{Binding RolloutPercent}" VerticalAlignment="Center" Margin="5, 0" />
                             </StackPanel>
-                            <StackPanel Orientation="Horizontal" Margin="10,0, 0, 10">
-                                <TextBlock Text="Size" Width="90" VerticalAlignment="Center" Margin="0" FontSize="12" FontWeight="Bold"/>
-                                <TextBlock Text="{Binding SizeInKb}" VerticalAlignment="Center" Margin="5, 0" />                                
+                            <StackPanel Orientation="Horizontal" Margin="10, 0, 0, 10">
+                                <TextBlock Text="Size" Width="50" VerticalAlignment="Center" Margin="0" FontSize="12" FontWeight="Bold"/>
+                                <TextBlock Text="{Binding SizeInKb}" VerticalAlignment="Center" Margin="5, 0" />
                             </StackPanel>
-                            
-
-                            <StackPanel Orientation="Horizontal"  Margin="10, 5" >
-                                <TextBlock Text="Enabled" Width="70" VerticalAlignment="Center" FontWeight="Bold"/>
-                                <ToggleButton IsChecked="{Binding IsEnabled}" Style="{StaticResource AnimatedSwitch}"
-                                              x:Name="EnableToggleButton"
-                                              Height="25" Width="80"  VerticalAlignment="Center"/>
-
-                            </StackPanel>
-                            <StackPanel Orientation="Horizontal"  Margin="10, 5">
-                                <TextBlock Text="Mandatory" Width="70" VerticalAlignment="Center" FontWeight="Bold"/>
-                                <ToggleButton IsChecked="{Binding is_mandatory}" Style="{StaticResource AnimatedSwitch}" 
-                                              x:Name="MandatoryToggleButton"
-                                              Height="25" Width="80" VerticalAlignment="Center" />
-
-                            </StackPanel>
-                            <Button Content="Update" x:Name="UpdateReleaseButton" Click="UpdateReleaseButton_Click" />
                         </StackPanel>
 
                         <StackPanel Orientation="Vertical"  Grid.Row="0" Grid.Column="2" Margin="10,0" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">

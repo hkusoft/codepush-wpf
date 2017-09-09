@@ -67,7 +67,7 @@ namespace RestLib
                 return response.Content;
             }
 
-        public static bool PatchAsync(string requestUri, object payload)
+        public static IRestResponse Patch(string requestUri, object payload)
         {
             var client = new RestClient(url_base_string);
             var request = new RestRequest(requestUri, Method.PATCH);
@@ -82,12 +82,11 @@ namespace RestLib
 
             //var response = await client.ExecuteTaskAsync(request); //Does not work, no response!
             var response = client.Execute(request);
-            return response.StatusCode == System.Net.HttpStatusCode.OK;
-
+            return response;
         }
               
 
-        public static bool UpdateRelease(Release r, string userName, string appName, string depolymentName)
+        public static Release UpdateRelease(Release r, string userName, string appName, string depolymentName)
         {
 
             //var uri = string.Format("https://api.mobile.azure.com/v0.1/apps/{0}/{1}/deployments/{2}/releases/{3}",
@@ -95,9 +94,14 @@ namespace RestLib
                             userName, appName, depolymentName, r.label);          
 
             var body = new { is_disabled = r.is_disabled, is_mandatory = r.is_mandatory };
-            var output = PatchAsync(uri,body);
+            var response = Patch(uri,body);
+            if (response.StatusCode == System.Net.HttpStatusCode.OK)
+            {
+                return JsonConvert.DeserializeObject<Release>(response.Content);
+            }
+            return null;
 
-            return output;
+           
         }
 
 
