@@ -1,53 +1,53 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.ComponentModel;
+using System.IO;
 
 namespace RestLib.helper
 {
     public class Release
     {
-        //[DisplayName("Test Property")]
-        //[Description("This is the description that shows up")]
-        [DisplayName("Release Binary Size")]         
         public string target_binary_range { get; set; }
-
-        [DisplayName("Release URL")]
         public string blob_url { get; set; }
-
-        [DisplayName("Description of the release")]
         public string description { get; set; }
-
-        [DisplayName("Enabled Status")]
         public bool is_disabled { get; set; }
-
-        [DisplayName("Mandatory")]
         public bool is_mandatory { get; set; }
-
-        [DisplayName("Release Label")]
         public string label { get; set; }
-
-        [DisplayName("Release Hash")]
         public string hash { get; set; }
-
-        [DisplayName("Released By")]
         public string released_by { get; set; }
-
-        [DisplayName("Release Method")]
         public string release_method { get; set; }
-
-        [DisplayName("Number of Rollout Users")]
         public int rollout { get; set; }
-
-        [DisplayName("Release Size")]
         public int size { get; set; }
-
-        [DisplayName("Update Time")]
         public long upload_time { get; set; }
 
         public override string ToString()
         {
-            return label;
+            //return JsonConvert.SerializeObject(this);  --> { "is_disabled" = true, "is_mandatory" = true });
+            //Below                                      --> { is_disabled = true, is_mandatory = true });
+            var serializer = new JsonSerializer();
+            var stringWriter = new StringWriter();
+            using (var writer = new JsonTextWriter(stringWriter))
+            {
+                writer.QuoteName = false;
+                serializer.Serialize(writer, this);
+                return stringWriter.ToString();
+            }
         }
 
+        public bool ShouldSerializetarget_binary_range() { return false; }
+        public bool ShouldSerializeblob_url() { return false; }
+        public bool ShouldSerializedescription() { return false; }
+        public bool ShouldSerializeis_disabled() { return true; }
+        public bool ShouldSerializeis_mandatory() { return true; }
+        public bool ShouldSerializelabel() { return false; }
+        public bool ShouldSerializehash() { return false; }
+        public bool ShouldSerializereleased_by() { return false; }
+        public bool ShouldSerializerelease_method() { return false; }
+        public bool ShouldSerializerollout() { return false; }
+        public bool ShouldSerializesize() { return false; }
+        public bool ShouldSerializeupload_time() { return false; }
+
+        [JsonIgnore]
         public bool IsEnabled
         {
             get { return !is_disabled; }
@@ -57,10 +57,11 @@ namespace RestLib.helper
             }
         }
 
+        [JsonIgnore]
         public string UploadTime
         {
             get
-            {                
+            {
                 DateTime start = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
                 DateTime date = start.AddMilliseconds(upload_time).ToLocalTime();
                 return String.Format("{0:g}", date);
@@ -68,6 +69,7 @@ namespace RestLib.helper
             }
         }
 
+        [JsonIgnore]
         public string SizeInKb
         {
             get
@@ -76,6 +78,7 @@ namespace RestLib.helper
             }
         }
 
+        [JsonIgnore]
         public string RolloutPercent
         {
             get

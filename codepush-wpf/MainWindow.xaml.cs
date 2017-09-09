@@ -3,17 +3,9 @@ using RestLib.helper;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace codepush_wpf
 {
@@ -105,6 +97,18 @@ namespace codepush_wpf
             }
         }
 
+        void GetSelectedReleaseInfo(out Deployment d, out Release r, out CodePushApp a)
+        {
+            d = null;
+            r = null;
+            a = null;
+            if (DeploymentList.SelectedItem !=null && ReleaseList.SelectedItem != null)
+            {
+                d = DeploymentList.SelectedItem as Deployment;
+                r = ReleaseList.SelectedItem as Release;
+                a = AppList.SelectedItem as CodePushApp;
+            }
+        }
         private void DeploymentList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (DeploymentList.SelectedItems.Count > 0)
@@ -116,6 +120,16 @@ namespace codepush_wpf
                     ReleaseList.ItemsSource = selected_releases;
                 }
             }
+        }
+             
+        private void UpdateReleaseButton_Click(object sender, RoutedEventArgs e)
+        {
+            Deployment d;
+            Release r;
+            CodePushApp a;
+            GetSelectedReleaseInfo(out d, out r, out a);
+            bool bSuccess = Http.UpdateRelease(r, user.name, a.name, d.name);
+            SetStatus(bSuccess? "Success!" : "Update Failure!");
         }
     }
 }
