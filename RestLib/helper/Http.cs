@@ -137,5 +137,15 @@ namespace RestLib
             var output = JsonConvert.DeserializeObject<List<Release>>(json);
             return output;
         }
+
+        public static async Task<List<ReleaseMetric>> GetReleaseMetricAsync(string owner_name, string app_name, string deployment_name)
+        {
+            //https://api.mobile.azure.com/v0.1/apps/cityuxykou/idemo/deployments/Staging/metrics
+            var path = string.Format("v0.1/apps/{0}/{1}/deployments/{2}/metrics", owner_name, app_name, deployment_name);
+            var json = await HttpGet(path);
+            var output = JsonConvert.DeserializeObject<List<ReleaseMetric>>(json);
+            return output;
+        }
+        
     }
 }

@@ -46,6 +46,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Poco\ReleaseMetric.cs" />
     <Compile Include="Poco\Deployment.cs" />
     <Compile Include="helper\Http.cs" />
     <Compile Include="Poco\Release.cs" />

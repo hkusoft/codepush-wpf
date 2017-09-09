@@ -87,5 +87,7 @@ namespace RestLib.helper
                 return string.Format("{0} %", rollout);
             }
         }
+        [JsonIgnore]
+        public ReleaseMetric Metric { get; set; }
     }
 }

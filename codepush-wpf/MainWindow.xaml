@@ -83,7 +83,7 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="8*"/>
             <ColumnDefinition Width="8*"/>
-            <ColumnDefinition Width="30*"/>
+            <ColumnDefinition Width="40*"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="36"/>
@@ -128,7 +128,8 @@
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="80"/>
                             <ColumnDefinition Width="160"/>
-                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="100"/>
+                            <ColumnDefinition Width="*"/>                            
                         </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="*"/>
@@ -137,6 +138,7 @@
                             <RowDefinition Height="*"/>
                         </Grid.RowDefinitions>
 
+                        <!--Label, Enable Toggle, Manditory Toggle-->
                         <StackPanel Orientation="Vertical" Grid.Row="0" Grid.Column="0">
                             <!--Version Label-->
                             <TextBlock Text="{Binding label}" VerticalAlignment="Top" Margin="0,5"
@@ -165,7 +167,7 @@
 
                         </StackPanel>
 
-
+                        <!--Upload Time, Release By, Rollout, Release Size-->
                         <StackPanel Orientation="Vertical"  Grid.Row="0" Grid.Column="1">
                             <TextBlock Text="Upload Time" VerticalAlignment="Center" Margin="10,0" FontSize="12" FontWeight="Bold"/>
                             <TextBlock Text="{Binding UploadTime}" VerticalAlignment="Center" Margin="10,0,10,5" />
@@ -182,13 +184,33 @@
                                 <TextBlock Text="{Binding SizeInKb}" VerticalAlignment="Center" Margin="5, 0" />
                             </StackPanel>
                         </StackPanel>
+                        
+                        <!--Release Metrics-->
+                        <StackPanel Orientation="Vertical"  Grid.Row="0" Grid.Column="2">
+                            <TextBlock Text="Active" VerticalAlignment="Center" Margin="10,0" FontSize="12" FontWeight="Bold"/>
+                            <TextBlock Text="{Binding Metric.active}" VerticalAlignment="Center" Margin="10,0,10,5" />
 
-                        <StackPanel Orientation="Vertical"  Grid.Row="0" Grid.Column="2" Margin="10,0" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+                            <TextBlock Text="Installed" VerticalAlignment="Center" Margin="10,0" FontSize="12" FontWeight="Bold"/>
+                            <TextBlock Text="{Binding Metric.installed}" VerticalAlignment="Center" Margin="10,0,10,5" />
+
+                            <StackPanel Orientation="Vertical">
+                                <TextBlock Text="Downloaded" VerticalAlignment="Center" Margin="10, 0" FontSize="12" FontWeight="Bold"/>
+                                <TextBlock Text="{Binding Metric.downloaded}" VerticalAlignment="Center"  Margin="10,0,10,5"/>
+                            </StackPanel>
+                            <StackPanel Orientation="Vertical">
+                                <TextBlock Text="Failed" VerticalAlignment="Center" Margin="10, 0" FontSize="12" FontWeight="Bold"/>
+                                <TextBlock Text="{Binding Metric.failed}" VerticalAlignment="Center"  Margin="10,0,10,5"/>
+                            </StackPanel>
+                        </StackPanel>
+                        <!--Description-->
+                        <StackPanel Orientation="Vertical"  Grid.Row="0" Grid.Column="3" Margin="10,0" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
                             <TextBlock Text="Description" FontWeight="Bold" HorizontalAlignment="Stretch"/>
                             <ScrollViewer VerticalAlignment="Stretch" HorizontalAlignment="Stretch" VerticalScrollBarVisibility="Auto" >
                                 <TextBlock Text="{Binding description}" />
                             </ScrollViewer>
                         </StackPanel>
+                        
+                        
                     </Grid>
 
 

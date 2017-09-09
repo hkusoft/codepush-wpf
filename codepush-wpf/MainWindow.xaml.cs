@@ -28,6 +28,7 @@ namespace codepush_wpf
         //Key is the App, each app has N deployments such as Staging and Production        
         Dictionary<CodePushApp, List<Deployment>> all_deployments = new Dictionary<CodePushApp, List<Deployment>>();
         Dictionary<Deployment, List<Release>> all_releases = new Dictionary<Deployment, List<Release>>();
+        Dictionary<Deployment, List<ReleaseMetric>> all_release_metrics = new Dictionary<Deployment, List<ReleaseMetric>>();
 
         public MainWindow()
         {
@@ -82,7 +83,18 @@ namespace codepush_wpf
             all_deployments[app] = deploys;
             SetStatus("Get all deployment for App --> " + app.display_name);
             foreach (var deployment in deploys)
+            {
                 RefreshReleaseList(owner_name, app, deployment);
+                await RefreshReleaseMetricAsync(owner_name, app, deployment);
+            }
+        }
+
+        private async Task RefreshReleaseMetricAsync(string owner_name, CodePushApp app, Deployment deployment)
+        {
+            var metrics = new List<ReleaseMetric>();
+            UpdateStatus("Get all releases metrics for deployment --> " + deployment.name);
+            metrics = await Http.GetReleaseMetricAsync(owner_name, app.name, deployment.name);
+            all_release_metrics[deployment] = metrics;
         }
 
         private async void RefreshReleaseList(string owner_name, CodePushApp app, Deployment deployment)
@@ -92,9 +104,23 @@ namespace codepush_wpf
             releases = await Http.GetReleasesAsync(owner_name, app.name, deployment.name);
             releases = releases.OrderByDescending(item => item.upload_time).ToList();
             all_releases[deployment] = releases;
+
+            RefreshReleaseMetrics(deployment, releases);
         }
 
-     
+        private void RefreshReleaseMetrics(Deployment d, List<Release> releases)
+        {
+            if (!all_release_metrics.ContainsKey(d))
+                return;
+
+            var release_metrics = all_release_metrics[d];
+            foreach (var item in releases)
+            {
+                var metric = release_metrics.FirstOrDefault(rm => rm.label == item.label);
+                if(metric !=null)
+                    item.Metric = metric;
+            }
+        }
 
         private void AppList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -108,18 +134,7 @@ namespace codepush_wpf
                 }
             }
         }
-
-        void GetSelectedReleaseInfo(out CodePushApp a, out Deployment d)
-        {
-            a = null;
-            d = null;           
-            
-            if (DeploymentList.SelectedItem !=null && ReleaseList.SelectedItem != null)
-            {
-                a = AppList.SelectedItem as CodePushApp;
-                d = DeploymentList.SelectedItem as Deployment;                
-            }
-        }
+               
         private void DeploymentList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (DeploymentList.SelectedItems.Count > 0)
