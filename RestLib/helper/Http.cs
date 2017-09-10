@@ -19,7 +19,7 @@ namespace RestLib
         static RestClient client;
         //app token, not app secret
         //const string app_token = "40abb7297a4f02904832decd9800aa573e4b131f";
-        const string app_token = "18f73dde601c4fa3538c309941438461672d02df"; 
+        const string app_token = "18f73dde601c4fa3538c309941438461672d02df";
         const string url_base_string = "https://api.mobile.azure.com";
         static Uri url_base = new Uri(url_base_string);        
         static Dictionary<string, string> header = new Dictionary<string, string>()

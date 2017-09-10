@@ -98,27 +98,29 @@ namespace codepush_wpf
             SetStatus("Get all deployment for App --> " + app.display_name);
             foreach (var deployment in deploys)
             {
+                var metricList = await ScanReleaseMetricAsync(app, deployment);
+                if (metricList == null)
+                {
+                    SetStatus(string.Format("Cannot get any release metric for the deployment {0}", deployment.name));
+                    return null;
+                }
+
                 var releaseList = await RefreshReleaseList(app, deployment);
                 if(releaseList == null)
                 {
                     SetStatus(string.Format("Cannot get any releases for the deployment {0}", deployment.name));
                     return null;
                 }
-                var metricList = await RefreshReleaseMetricAsync(app, deployment);
-                if(metricList == null)
-                {
-                    SetStatus(string.Format("Cannot get any release metric for the deployment {0}", deployment.name));
-                    return null;
-                }
+                
+                
             }
             return deploys;
         }
 
-        private async Task<List<ReleaseMetric>> RefreshReleaseMetricAsync(CodePushApp app, Deployment deployment)
-        {
-            var metrics = new List<ReleaseMetric>();
+        private async Task<List<ReleaseMetric>> ScanReleaseMetricAsync(CodePushApp app, Deployment deployment)
+        {            
             UpdateStatus("Get all releases metrics for deployment --> " + deployment.name);
-            metrics = await Http.GetReleaseMetricAsync(app.owner.name, app.name, deployment.name);
+            var metrics = await Http.GetReleaseMetricAsync(app.owner.name, app.name, deployment.name);
             if(metrics == null)
             {
                 SetStatus(string.Format("Cannot get any release metric for the deployment {0}", deployment.name));
@@ -141,21 +143,27 @@ namespace codepush_wpf
             releases = releases.OrderByDescending(item => item.upload_time).ToList();
             all_releases[deployment] = releases;
 
-            RefreshReleaseMetrics(deployment, releases);
+            RefreshReleaseMetrics(deployment, all_releases[deployment]);
             return releases;
         }
 
         private void RefreshReleaseMetrics(Deployment d, List<Release> releases)
         {
             if (!all_release_metrics.ContainsKey(d))
+            {
+                SetStatus("Failed to get any releases metric for deployment: " + d.name);
                 return;
-
+            }
             var release_metrics = all_release_metrics[d];
             foreach (var item in releases)
             {
                 var metric = release_metrics.FirstOrDefault(rm => rm.label == item.label);
-                if(metric !=null)
-                    item.Metric = metric;
+                if(metric ==null)
+                {
+                    SetStatus("Failed to get any releases metric for deployment: " + item.label);
+                    return;
+                }
+                item.Metric = metric;
             }
         }
 
