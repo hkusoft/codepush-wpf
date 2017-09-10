@@ -83,7 +83,9 @@
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="8*"/>
+            <ColumnDefinition Width="5"/>
             <ColumnDefinition Width="8*"/>
+            <ColumnDefinition Width="5"/>
             <ColumnDefinition Width="40*"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
@@ -92,10 +94,15 @@
             <RowDefinition Height="495*"/>
             <RowDefinition Height="30"/>
         </Grid.RowDefinitions>
-        <Label Content="Apps" Grid.Column="0" Grid.Row="1" VerticalAlignment="Stretch"/>
-        <Label Content="Deployments" Grid.Column="1" Grid.Row="1" VerticalAlignment="Center"/>
-        <Label Content="Releases" Grid.Column="2" Grid.Row="1" VerticalAlignment="Center"/>
-        <Label Name="InfoView" Grid.Row="0" Grid.ColumnSpan="3" HorizontalAlignment="Stretch" VerticalAlignment="Center" Content="Info" Background="LightSalmon" FontSize="16"/>
+
+        <GridSplitter Grid.Column="1" Grid.Row="2" Width ="5" HorizontalAlignment="Center" VerticalAlignment="Stretch" ResizeDirection="Columns" ResizeBehavior="PreviousAndNext" ShowsPreview="True"/>
+        <GridSplitter Grid.Column="3" Grid.Row="2" Width ="5" HorizontalAlignment="Center" VerticalAlignment="Stretch" ResizeDirection="Columns" ResizeBehavior="PreviousAndNext"/>
+        <Label Grid.Column="0" Grid.Row="1" VerticalAlignment="Stretch" Content="Apps" />
+        <Label Grid.Column="2" Grid.Row="1" VerticalAlignment="Center" Content="Deployments"/>
+        <Label Grid.Column="4" Grid.Row="1" VerticalAlignment="Center" Content="Releases"/>
+        <Label Name="InfoView" Grid.Row="0" Grid.ColumnSpan="5" HorizontalAlignment="Stretch" VerticalAlignment="Center" Content="Info" Background="LightSalmon" FontSize="16"/>
+        
+
         <ListBox Name="AppList" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.Column="0" Grid.Row="2" ItemsSource="{Binding}" SelectionChanged="AppList_SelectionChanged">
             <ListBox.ItemTemplate>
                 <DataTemplate>
@@ -120,8 +127,8 @@
             </ListBox.ItemTemplate>
         </ListBox>
 
-        <ListBox Name="DeploymentList" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.Column="1" Grid.Row="2" SelectionChanged="DeploymentList_SelectionChanged" />
-        <ListBox Name="ReleaseList" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.Column="2" Grid.Row="2"
+        <ListBox Grid.Column="2" Grid.Row="2" Name="DeploymentList" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" SelectionChanged="DeploymentList_SelectionChanged" />
+        <ListBox Grid.Column="4" Grid.Row="2" Name="ReleaseList" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" 
                  ItemContainerStyle ="{StaticResource AltRow}">
             <ListBox.ItemTemplate>
                 <DataTemplate>
