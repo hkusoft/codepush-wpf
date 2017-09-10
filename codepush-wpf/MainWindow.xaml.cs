@@ -203,28 +203,22 @@ namespace codepush_wpf
             var CurrentRelease = tb.DataContext as Release;
             if (CurrentApp != null && CurrentDeployment != null && CurrentRelease != null)
             {
-                //Task.Run(() =>
-                //{                   
                 this.Cursor = Cursors.Wait;
-                    var UpdatedRelease = Http.UpdateRelease(CurrentRelease, CurrentApp.owner.name, CurrentApp.name, CurrentDeployment.name);
-                    if (UpdatedRelease == null)
-                    {
-                        SetStatus(string.Format("Failed to update the Mandatory Status for {0}", CurrentRelease.label));
-                        return;
-                    }
+                var UpdatedRelease = Http.UpdateRelease(CurrentRelease, CurrentApp.owner.name, CurrentApp.name, CurrentDeployment.name);
+                if (UpdatedRelease == null)
+                {
+                    SetStatus(string.Format("Failed to update the Mandatory Status for {0}", CurrentRelease.label));
+                    return;
+                }
 
-                    Dispatcher.BeginInvoke((Action)(() =>
-                    {
-                        SetStatus(tb.Name == "EnableToggleButton" ?
-                        string.Format("Success! Release {0} now {1}", UpdatedRelease.label, UpdatedRelease.is_disabled ? "DISABLED" : "ENABLED"):
-                        string.Format("Success! Release {0} now is {1}", UpdatedRelease.label, UpdatedRelease.is_mandatory ? "MANDATORY" : "NON-MANDATORY") 
-                        );
-                    }));
+                Dispatcher.BeginInvoke((Action)(() =>
+                {
+                    SetStatus(tb.Name == "EnableToggleButton" ?
+                    string.Format("Success! Release {0} now {1}", UpdatedRelease.label, UpdatedRelease.is_disabled ? "DISABLED" : "ENABLED") :
+                    string.Format("Success! Release {0} now is {1}", UpdatedRelease.label, UpdatedRelease.is_mandatory ? "MANDATORY" : "NON-MANDATORY")
+                    );
+                }));
                 this.Cursor = Cursors.Arrow;
-
-                //});
-
-                
             }
         }
 
