@@ -50,17 +50,26 @@ namespace codepush_wpf
             UpdateStatus("Login ... ");
             user = await Http.GetLoginUser();            
 
-            UserLabel.Content = user.display_name;
+            UserLabel.Content = "User Name:" + user.name;
 
             UpdateStatus("Get all apps ... ");
             apps = await Http.GetAppsAsync();
 
             AppList.ItemsSource = apps;
-
+            if(apps == null)
+            {
+                SetStatus("Failed to get any apps from your account. Make sure you have sufficient access rights.");
+                return;
+            }
             foreach (var app in apps)
             {
                 //all_apps[app.name] = app;
-                await RefreshDepolymentListAsync(user.display_name, app);
+                var deploys = await RefreshDepolymentListAsync(app.owner.name, app);
+                if (deploys == null)
+                {
+                    SetStatus("Failed to get any deployment for your app: " + app.name);
+                    return;
+                }
             }
 
             UpdateStatus("Successfully fetched all app info.");
@@ -75,37 +84,65 @@ namespace codepush_wpf
         }
 
 
-        private async Task RefreshDepolymentListAsync(string owner_name, CodePushApp app)
+        private async Task<List<Deployment>> RefreshDepolymentListAsync(string owner_name, CodePushApp app)
         {
             List<Deployment> deploys = new List<Deployment>();
-            deploys = await Http.GetDeploymentsAsync(owner_name, app.name);
+            deploys = await Http.GetDeploymentsAsync(app.owner.name, app.name);
+            if(deploys == null)
+            {
+                SetStatus(string.Format("Cannot get any deployment for the app {0}", app.name));
+                return null;
+            }
 
             all_deployments[app] = deploys;
             SetStatus("Get all deployment for App --> " + app.display_name);
             foreach (var deployment in deploys)
             {
-                RefreshReleaseList(owner_name, app, deployment);
-                await RefreshReleaseMetricAsync(owner_name, app, deployment);
+                var releaseList = await RefreshReleaseList(app, deployment);
+                if(releaseList == null)
+                {
+                    SetStatus(string.Format("Cannot get any releases for the deployment {0}", deployment.name));
+                    return null;
+                }
+                var metricList = await RefreshReleaseMetricAsync(app, deployment);
+                if(metricList == null)
+                {
+                    SetStatus(string.Format("Cannot get any release metric for the deployment {0}", deployment.name));
+                    return null;
+                }
             }
+            return deploys;
         }
 
-        private async Task RefreshReleaseMetricAsync(string owner_name, CodePushApp app, Deployment deployment)
+        private async Task<List<ReleaseMetric>> RefreshReleaseMetricAsync(CodePushApp app, Deployment deployment)
         {
             var metrics = new List<ReleaseMetric>();
             UpdateStatus("Get all releases metrics for deployment --> " + deployment.name);
-            metrics = await Http.GetReleaseMetricAsync(owner_name, app.name, deployment.name);
+            metrics = await Http.GetReleaseMetricAsync(app.owner.name, app.name, deployment.name);
+            if(metrics == null)
+            {
+                SetStatus(string.Format("Cannot get any release metric for the deployment {0}", deployment.name));
+                return null;
+            }
             all_release_metrics[deployment] = metrics;
+            return metrics;
         }
 
-        private async void RefreshReleaseList(string owner_name, CodePushApp app, Deployment deployment)
+        private async Task<List<Release>> RefreshReleaseList(CodePushApp app, Deployment deployment)
         {
             List<Release> releases = new List<Release>();
             UpdateStatus("Get all releases for deployment --> " + deployment.name);
-            releases = await Http.GetReleasesAsync(owner_name, app.name, deployment.name);
+            releases = await Http.GetReleasesAsync(app.owner.name, app.name, deployment.name);
+            if(releases == null)
+            {
+                SetStatus("Failed to get any releases for deployment: " + deployment.name);
+                return null;
+            }
             releases = releases.OrderByDescending(item => item.upload_time).ToList();
             all_releases[deployment] = releases;
 
             RefreshReleaseMetrics(deployment, releases);
+            return releases;
         }
 
         private void RefreshReleaseMetrics(Deployment d, List<Release> releases)
@@ -161,7 +198,7 @@ namespace codepush_wpf
                 //Task.Run(() =>
                 //{                   
                 this.Cursor = Cursors.Wait;
-                    var UpdatedRelease = Http.UpdateRelease(CurrentRelease, user.name, CurrentApp.name, CurrentDeployment.name);
+                    var UpdatedRelease = Http.UpdateRelease(CurrentRelease, CurrentApp.owner.name, CurrentApp.name, CurrentDeployment.name);
                     if (UpdatedRelease == null)
                     {
                         SetStatus(string.Format("Failed to update the Mandatory Status for {0}", CurrentRelease.label));

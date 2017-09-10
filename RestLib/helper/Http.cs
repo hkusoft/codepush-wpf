@@ -17,7 +17,9 @@ namespace RestLib
         //'https://api.mobile.azure.com/v0.1/user'
 
         static RestClient client;
-        const string app_token = "40abb7297a4f02904832decd9800aa573e4b131f";
+        //app token, not app secret
+        //const string app_token = "40abb7297a4f02904832decd9800aa573e4b131f";
+        const string app_token = "18f73dde601c4fa3538c309941438461672d02df"; 
         const string url_base_string = "https://api.mobile.azure.com";
         static Uri url_base = new Uri(url_base_string);        
         static Dictionary<string, string> header = new Dictionary<string, string>()
@@ -115,17 +117,40 @@ namespace RestLib
         public static async Task<List<CodePushApp>> GetAppsAsync()
         {
             var json =await HttpGet("v0.1/apps");
-            var output = JsonConvert.DeserializeObject<List<CodePushApp>>(json);
-            return output;
+            try
+            {
+                var output = JsonConvert.DeserializeObject<List<CodePushApp>>(json);
+                return output;
+            }
+            catch (Exception)
+            {
+                return null;
+            }           
+            
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="owner_name">The app is owned by one person, may not be the login user. 
+        /// For instance, the owner is me, and I invite someone to access this app.</param>
+        /// <param name="app_name"></param>
+        /// <returns></returns>
         public static async Task<List<Deployment>> GetDeploymentsAsync(string owner_name, string app_name)
         {
             //v0.1/apps/cityuxykou/idemo/deployments'
             var path = string.Format("v0.1/apps/{0}/{1}/deployments", owner_name, app_name);
             var json = await HttpGet(path);
-            var output = JsonConvert.DeserializeObject<List<Deployment>>(json);
-            return output;
+            try
+            {
+                var output = JsonConvert.DeserializeObject<List<Deployment>>(json);
+                return output;
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+            
         }
 
         //GET /v0.1/apps/{owner_name}/{app_name}/deployments/{deployment_name}/releases
@@ -134,8 +159,15 @@ namespace RestLib
             //v0.1/apps/cityuxykou/idemo/deployments'
             var path = string.Format("v0.1/apps/{0}/{1}/deployments/{2}/releases", owner_name, app_name, deployment_name);
             var json = await HttpGet(path);
-            var output = JsonConvert.DeserializeObject<List<Release>>(json);
-            return output;
+            try
+            {
+                var output = JsonConvert.DeserializeObject<List<Release>>(json);
+                return output;
+            }
+            catch (Exception)
+            {
+                return null;                
+            }            
         }
 
         public static async Task<List<ReleaseMetric>> GetReleaseMetricAsync(string owner_name, string app_name, string deployment_name)
@@ -143,8 +175,15 @@ namespace RestLib
             //https://api.mobile.azure.com/v0.1/apps/cityuxykou/idemo/deployments/Staging/metrics
             var path = string.Format("v0.1/apps/{0}/{1}/deployments/{2}/metrics", owner_name, app_name, deployment_name);
             var json = await HttpGet(path);
-            var output = JsonConvert.DeserializeObject<List<ReleaseMetric>>(json);
-            return output;
+            try
+            {
+                var output = JsonConvert.DeserializeObject<List<ReleaseMetric>>(json);
+                return output;
+            }
+            catch (Exception)
+            {
+                return null;                
+            }            
         }
         
     }
