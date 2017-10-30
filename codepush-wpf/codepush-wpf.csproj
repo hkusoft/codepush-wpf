@@ -81,6 +81,9 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="OsToIconConverter.cs" />
+    <Compile Include="UserInfo.xaml.cs">
+      <DependentUpon>UserInfo.xaml</DependentUpon>
+    </Compile>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -93,6 +96,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="UserInfo.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -133,6 +140,12 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Icons\app_icon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Icons\login.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Icons\paste.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

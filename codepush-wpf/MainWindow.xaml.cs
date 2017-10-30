@@ -22,8 +22,12 @@ namespace codepush_wpf
 
         //The current selected App is the AppList
         CodePushApp CurrentApp;
-        Deployment CurrentDeployment;        
+        Deployment CurrentDeployment;
 
+        //const string app_token = "40abb7297a4f02904832decd9800aa573e4b131f";
+        //const string app_token = "18f73dde601c4fa3538c309941438461672d02df";
+        //string app_token = "a6d65eed1a887f86d525137de0f6c9581bfc9fda";    //dch.it.pro
+        string app_token;
 
         //Key is the App, each app has N deployments such as Staging and Production        
         Dictionary<CodePushApp, List<Deployment>> all_deployments = new Dictionary<CodePushApp, List<Deployment>>();
@@ -37,9 +41,21 @@ namespace codepush_wpf
 
         private void Window_Initialized(object sender, EventArgs e)
         {
-            RefreshAppList();
+            Init();
         }
 
+        void Init()
+        {
+            UserLabel.Content = "";
+            AppList.ItemsSource=null;
+            DeploymentList.ItemsSource = null;
+            ReleaseList.ItemsSource = null;
+
+            app_token = Properties.Settings.Default.AppToken;
+            
+            Http.Init(app_token);
+            RefreshAppList();
+        }
        
         async void RefreshAppList()
         {
@@ -50,7 +66,7 @@ namespace codepush_wpf
             UpdateStatus("Login ... ");
             user = await Http.GetLoginUser();            
 
-            UserLabel.Content = "User Name:" + user.name;
+            UserLabel.Content = user.name;
 
             UpdateStatus("Get all apps ... ");
             apps = await Http.GetAppsAsync();
@@ -58,7 +74,7 @@ namespace codepush_wpf
             AppList.ItemsSource = apps;
             if(apps == null)
             {
-                SetStatus("Failed to get any apps from your account. Make sure you have sufficient access rights.");
+                SetStatus("No apps found for your account. Make sure you have sufficient access rights.");
                 return;
             }
             foreach (var app in apps)
@@ -235,6 +251,33 @@ namespace codepush_wpf
             }));
         }
 
-   
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            LoginOutContextMenu.PlacementTarget = sender as Button;
+            LoginOutContextMenu.IsOpen = true;
+
+        }
+
+        private void Logout_Click(object sender, RoutedEventArgs e)
+        {
+            if (!string.IsNullOrEmpty(UserLabel.Content as string))
+            {
+                Properties.Settings.Default.AppToken = "";
+                Init();
+            }
+        }
+
+        private void Login_Click(object sender, RoutedEventArgs e)
+        {
+            if (string.IsNullOrEmpty(UserLabel.Content as string))
+            {
+                UserInfo window = new UserInfo();
+                window.Owner = this;
+                if(window.ShowDialog()== true)
+                {                    
+                    Init();
+                }
+            }
+        }
     }
 }

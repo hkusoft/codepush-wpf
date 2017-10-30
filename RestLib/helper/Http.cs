@@ -19,48 +19,60 @@ namespace RestLib
         static RestClient client;
         //app token, not app secret
         //const string app_token = "40abb7297a4f02904832decd9800aa573e4b131f";
-        const string app_token = "18f73dde601c4fa3538c309941438461672d02df";
+        //const string app_token = "18f73dde601c4fa3538c309941438461672d02df";
+        static string app_token = null;
+        static Dictionary<string, string> header = null;
+
         const string url_base_string = "https://api.mobile.azure.com";
-        static Uri url_base = new Uri(url_base_string);        
-        static Dictionary<string, string> header = new Dictionary<string, string>()
-            {
-                { "X-API-Token", app_token }
-            };
+        static Uri url_base = new Uri(url_base_string);
 
         static Http()
         {
             client = new RestClient(url_base_string);            
         }
 
-            /// <summary>
-            /// This function fires an Http Get and get the raw resoonse in string
-            /// </summary>
-            /// <param name="base_url">e.g. new Uri("https://api.mobile.azure.com/"); </param>
-            /// <param name="url_endpoint_path">e.g. "v0.1/user/whatever/endpoint"</param>
-            /// <param name="requestHedaderInfo"> A dictionary of request header</param>
-            /// <returns>
-            ///     Task<string> response.
-            ///     Use response.Result to get the response string, note that Accessing the property's 
-            ///     get accessor (i.e. response.Result) blocks the calling thread until the asynchronous 
-            ///     operation is complete; it is equivalent to calling the Wait method
-            ///     See also: https://msdn.microsoft.com/en-us/library/dd321468(v=vs.110).aspx
-            /// </returns>
-            /// Example:
-            ///     var url_base = new Uri("https://api.mobile.azure.com/");
-            ///     var endpoint_path = "v0.1/user";
-            ///                 
-            ///     Task<string> response; 
-            ///     //Accessing Result in another Task makes the UI responsive
-            ///     Task t = Task.Run(() =>  
-            ///     {
-            ///         response = HttpGet(url_base, endpoint_path, header).Result;
-            ///     });
-            ///     //Get Result when the task is done
-            ///     t.ContinueWith((t2) =>  
-            ///     {               
-            ///         Console.Writeline(response);
-            ///     });
-            public static async Task<string> HttpGet(string url_endpoint_path)            
+        /// <summary>
+        /// This function must be called before other function is called.
+        /// </summary>
+        /// <param name="token"></param>
+        public static void Init(string token)
+        {
+            app_token = token;
+            header = new Dictionary<string, string>()
+            {
+                { "X-API-Token", app_token }
+            };
+        }
+
+        /// <summary>
+        /// This function fires an Http Get and get the raw resoonse in string
+        /// </summary>
+        /// <param name="base_url">e.g. new Uri("https://api.mobile.azure.com/"); </param>
+        /// <param name="url_endpoint_path">e.g. "v0.1/user/whatever/endpoint"</param>
+        /// <param name="requestHedaderInfo"> A dictionary of request header</param>
+        /// <returns>
+        ///     Task<string> response.
+        ///     Use response.Result to get the response string, note that Accessing the property's 
+        ///     get accessor (i.e. response.Result) blocks the calling thread until the asynchronous 
+        ///     operation is complete; it is equivalent to calling the Wait method
+        ///     See also: https://msdn.microsoft.com/en-us/library/dd321468(v=vs.110).aspx
+        /// </returns>
+        /// Example:
+        ///     var url_base = new Uri("https://api.mobile.azure.com/");
+        ///     var endpoint_path = "v0.1/user";
+        ///                 
+        ///     Task<string> response; 
+        ///     //Accessing Result in another Task makes the UI responsive
+        ///     Task t = Task.Run(() =>  
+        ///     {
+        ///         response = HttpGet(url_base, endpoint_path, header).Result;
+        ///     });
+        ///     //Get Result when the task is done
+        ///     t.ContinueWith((t2) =>  
+        ///     {               
+        ///         Console.Writeline(response);
+        ///     });
+        public static async Task<string> HttpGet(string url_endpoint_path)            
             {
                 var request = new RestRequest(url_endpoint_path, Method.GET);
                 request.AddHeader("Accept", "application/json");
