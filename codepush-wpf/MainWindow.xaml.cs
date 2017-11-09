@@ -44,17 +44,26 @@ namespace codepush_wpf
             Init();
         }
 
-        void Init()
+        void Init(bool IsLoginInProgress = true)
         {
+          
+
             UserLabel.Content = "";
             AppList.ItemsSource = null;
             DeploymentList.ItemsSource = null;
             ReleaseList.ItemsSource = null;
 
-            app_token = Properties.Settings.Default.AppToken;
+            RefreshReleasesButton.IsEnabled = false;
 
-            Http.Init(app_token);
-            RefreshAll();
+            app_token = Properties.Settings.Default.AppToken;
+            if (Properties.Settings.Default.RememberMe && !string.IsNullOrEmpty(app_token))
+            {
+                if (IsLoginInProgress)
+                    UpdateStatus("Login now ...");
+
+                Http.Init(app_token);
+                RefreshAll(IsLoginInProgress);
+            }            
         }
 
         
@@ -77,7 +86,7 @@ namespace codepush_wpf
             DeploymentList.IsEnabled = false;
             ReleaseList.IsEnabled = false;
 
-            UpdateStatus("Login ... ");
+            //UpdateStatus("Login ... ");
             user = await Http.GetLoginUser();
             UserLabel.Content = user.name;
 
@@ -100,7 +109,18 @@ namespace codepush_wpf
         private async void RefreshReleases_Click(object sender, RoutedEventArgs e)
         {
             var app = AppList.SelectedItem as CodePushApp;
+            if(app == null)
+            {
+                UpdateStatus("Select an App first");
+                return;
+            }
             var d = DeploymentList.SelectedItem as Deployment;
+            if(d == null)
+            {
+
+                UpdateStatus("Select an deployment first");
+                return;
+            }
 
             ReleaseList.ItemsSource = null;
                         
@@ -110,11 +130,15 @@ namespace codepush_wpf
             ReleaseList.ItemsSource = all_releases[d];
         }
 
-        async void RefreshAll()
+        async void RefreshAll(bool IsLoginInProgress = true)
         {
             await GetActiveUser();            
             await GetAppsAsync();
-
+            if (apps == null)
+            {
+                UpdateStatus(IsLoginInProgress? "Incorrect login credentials. Contact admin." : "Logout success");
+                return;
+            }
             foreach (var app in apps)
             {
                 var deploys = await GetDeploymentsAsync(app);                
@@ -129,6 +153,8 @@ namespace codepush_wpf
             AppList.IsEnabled = true;
             DeploymentList.IsEnabled = true;
             ReleaseList.IsEnabled = true;
+            RefreshReleasesButton.IsEnabled = true;
+
             if (AppList.Items.Count > 0)
                 AppList.SelectedIndex = 0;
 
@@ -271,8 +297,11 @@ namespace codepush_wpf
             if (!string.IsNullOrEmpty(UserLabel.Content as string))
             {
                 Properties.Settings.Default.AppToken = "";
-                Init();
+                Properties.Settings.Default.Save();
+                Init(false); //Retry login to clear everything
             }
+            else
+                UpdateStatus("Already logout!");
         }
 
         private void Login_Click(object sender, RoutedEventArgs e)
@@ -286,6 +315,8 @@ namespace codepush_wpf
                     Init();
                 }
             }
+            else
+                UpdateStatus("Already logined!");
         }      
     }
 }

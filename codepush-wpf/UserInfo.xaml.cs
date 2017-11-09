@@ -33,10 +33,14 @@ namespace codepush_wpf
 
         private void OK_Click(object sender, RoutedEventArgs e)
         {
-            Properties.Settings.Default.AppToken = TokenTextBox.Text;
-            this.DialogResult = true;
+            if (RememberMeCheck.IsChecked == true && !string.IsNullOrEmpty(TokenTextBox.Text))
+            {
+                Properties.Settings.Default.AppToken = TokenTextBox.Text;
+                Properties.Settings.Default.Save();
+            }
+            DialogResult = true;
 
-            this.Close();
+            Close();
         }
 
         private void Paste_Click(object sender, RoutedEventArgs e)
@@ -49,6 +53,17 @@ namespace codepush_wpf
             this.DialogResult = false;
 
             this.Close();
+        }
+
+        private void OnCheckChanged(object sender, RoutedEventArgs e)
+        {
+            Properties.Settings.Default.RememberMe = RememberMeCheck.IsChecked.Value;
+            Properties.Settings.Default.Save();
+        }
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            RememberMeCheck.IsChecked = Properties.Settings.Default.RememberMe;
         }
     }
 }

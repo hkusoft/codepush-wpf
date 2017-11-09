@@ -114,11 +114,11 @@
 
         <StackPanel Orientation="Horizontal"  Grid.Column="4" Grid.Row="1">
             <Label VerticalAlignment="Stretch" Content="Releases" />
-            <Button VerticalAlignment="Center" HorizontalAlignment="Right" Click="RefreshReleases_Click">
+            <Button VerticalAlignment="Center" HorizontalAlignment="Right" Click="RefreshReleases_Click" Name="RefreshReleasesButton">
                 <Image Source="/Icons/refresh.png" HorizontalAlignment="Right" Margin="0,0" Width="24" Height="24"/>
             </Button>
         </StackPanel>
-        <Label Name="InfoView" Grid.Row="0" Grid.ColumnSpan="5" HorizontalAlignment="Stretch" VerticalAlignment="Center" Content="Info" Background="LightSalmon" FontSize="16" Margin="0,2"/>
+        <Label Name="InfoView" Grid.Row="0" Grid.ColumnSpan="5" HorizontalAlignment="Stretch" VerticalAlignment="Center" Content="Ready" Background="LightSalmon" FontSize="16" Margin="0,2"/>
         <DockPanel Grid.Row="0" Grid.Column="5" Background="LightSalmon" Margin="0,2">
             <Label Name="UserLabel" Content="" Width="140" HorizontalContentAlignment="Right" VerticalAlignment="Center" FontSize="16"/>
             <Button VerticalAlignment="Center" HorizontalAlignment="Center" Click="Button_Click">

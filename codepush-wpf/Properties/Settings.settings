@@ -3,7 +3,10 @@
   <Profiles />
   <Settings>
     <Setting Name="AppToken" Type="System.String" Scope="User">
-      <Value Profile="(Default)">a6d65eed1a887f86d525137de0f6c9581bfc9fda</Value>
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="RememberMe" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
     </Setting>
   </Settings>
 </SettingsFile>

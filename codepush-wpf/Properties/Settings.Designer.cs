@@ -25,13 +25,25 @@ namespace codepush_wpf.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("a6d65eed1a887f86d525137de0f6c9581bfc9fda")]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
         public string AppToken {
             get {
                 return ((string)(this["AppToken"]));
             }
             set {
                 this["AppToken"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool RememberMe {
+            get {
+                return ((bool)(this["RememberMe"]));
+            }
+            set {
+                this["RememberMe"] = value;
             }
         }
     }
