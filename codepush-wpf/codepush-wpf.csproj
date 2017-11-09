@@ -147,5 +147,8 @@
   <ItemGroup>
     <Resource Include="Icons\paste.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Icons\refresh.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -98,9 +98,26 @@
 
         <GridSplitter Grid.Column="1" Grid.Row="2" Width ="5" HorizontalAlignment="Center" VerticalAlignment="Stretch" ResizeDirection="Columns" ResizeBehavior="PreviousAndNext" ShowsPreview="True"/>
         <GridSplitter Grid.Column="3" Grid.Row="2" Width ="5" HorizontalAlignment="Center" VerticalAlignment="Stretch" ResizeDirection="Columns" ResizeBehavior="PreviousAndNext"/>
-        <Label Grid.Column="0" Grid.Row="1" VerticalAlignment="Stretch" Content="Apps" />
-        <Label Grid.Column="2" Grid.Row="1" VerticalAlignment="Center" Content="Deployments" Margin="0,2"/>
-        <Label Grid.Column="4" Grid.Row="1" VerticalAlignment="Center" Content="Releases" Grid.ColumnSpan="2" Margin="0,2"/>
+        <StackPanel Orientation="Horizontal"  Grid.Column="0" Grid.Row="1">
+            <Label VerticalAlignment="Stretch" Content="Apps" />
+            <!--<Button VerticalAlignment="Center" HorizontalAlignment="Right" Click="RefreshApp_Click">
+                <Image Source="/Icons/refresh.png" HorizontalAlignment="Right" Margin="0,0" Width="24" Height="24"/>                
+            </Button>-->
+        </StackPanel>
+
+        <StackPanel Orientation="Horizontal"  Grid.Column="2" Grid.Row="1">
+            <Label VerticalAlignment="Stretch" Content="Deployments" />
+            <!--<Button VerticalAlignment="Center" HorizontalAlignment="Right" Click="RefreshDeployments_Click">
+                <Image Source="/Icons/refresh.png" HorizontalAlignment="Right" Margin="0,0" Width="24" Height="24"/>
+            </Button>-->
+        </StackPanel>
+
+        <StackPanel Orientation="Horizontal"  Grid.Column="4" Grid.Row="1">
+            <Label VerticalAlignment="Stretch" Content="Releases" />
+            <Button VerticalAlignment="Center" HorizontalAlignment="Right" Click="RefreshReleases_Click">
+                <Image Source="/Icons/refresh.png" HorizontalAlignment="Right" Margin="0,0" Width="24" Height="24"/>
+            </Button>
+        </StackPanel>
         <Label Name="InfoView" Grid.Row="0" Grid.ColumnSpan="5" HorizontalAlignment="Stretch" VerticalAlignment="Center" Content="Info" Background="LightSalmon" FontSize="16" Margin="0,2"/>
         <DockPanel Grid.Row="0" Grid.Column="5" Background="LightSalmon" Margin="0,2">
             <Label Name="UserLabel" Content="" Width="140" HorizontalContentAlignment="Right" VerticalAlignment="Center" FontSize="16"/>
