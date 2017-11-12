@@ -20,7 +20,7 @@ namespace RestLib
         //app token, not app secret
         //const string app_token = "40abb7297a4f02904832decd9800aa573e4b131f";
         //const string app_token = "18f73dde601c4fa3538c309941438461672d02df";
-        static string app_token = null;
+        static string app_token = null;  //a6d65eed1a887f86d525137de0f6c9581bfc9fda
         static Dictionary<string, string> header = null;
 
         const string url_base_string = "https://api.mobile.azure.com";
@@ -114,6 +114,14 @@ namespace RestLib
         }
               
 
+        /// <summary>
+        /// This function updates the enabled and manditory status of a release
+        /// </summary>
+        /// <param name="r"></param>
+        /// <param name="userName"></param>
+        /// <param name="appName"></param>
+        /// <param name="depolymentName"></param>
+        /// <returns></returns>
         public static Release UpdateRelease(Release r, string userName, string appName, string depolymentName)
         {
             var uri = string.Format("v0.1/apps/{0}/{1}/deployments/{2}/releases/{3}",
@@ -126,8 +134,6 @@ namespace RestLib
                 return JsonConvert.DeserializeObject<Release>(response.Content);
             }
             return null;
-
-           
         }
 
 
