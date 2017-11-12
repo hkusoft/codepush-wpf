@@ -72,14 +72,28 @@ namespace RestLib
         ///     {               
         ///         Console.Writeline(response);
         ///     });
-        public static async Task<string> HttpGet(string url_endpoint_path)            
-            {
-                var request = new RestRequest(url_endpoint_path, Method.GET);
-                request.AddHeader("Accept", "application/json");
-                request.AddHeader("X-API-Token", app_token);
-                var response = await client.ExecuteTaskAsync(request);                
-                return response.Content;
-            }
+        public static async Task<string> HttpGet(string url_endpoint_path)
+        {
+            var request = new RestRequest(url_endpoint_path, Method.GET);
+            request.AddHeader("Accept", "application/json");
+            request.AddHeader("X-API-Token", app_token);
+            var response = await client.ExecuteTaskAsync(request);
+            return response.Content;
+        }
+
+        public static async Task<IRestResponse> HttpPost(string requestUri, object payload)
+        {
+            var client = new RestClient(url_base_string);
+            var request = new RestRequest(requestUri, Method.POST);
+            request.AddHeader("Content-Type", "application/json");
+            request.AddHeader("Accept", "application/json");
+            request.AddHeader("X-API-Token", app_token);
+            request.RequestFormat = DataFormat.Json;
+            request.AddBody(payload);
+
+            var response = await client.ExecuteTaskAsync(request);
+            return response;
+        }
 
         public static IRestResponse Patch(string requestUri, object payload)
         {
@@ -102,8 +116,6 @@ namespace RestLib
 
         public static Release UpdateRelease(Release r, string userName, string appName, string depolymentName)
         {
-
-            //var uri = string.Format("https://api.mobile.azure.com/v0.1/apps/{0}/{1}/deployments/{2}/releases/{3}",
             var uri = string.Format("v0.1/apps/{0}/{1}/deployments/{2}/releases/{3}",
                             userName, appName, depolymentName, r.label);          
 
